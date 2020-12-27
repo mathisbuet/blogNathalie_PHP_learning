@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+{% form_theme formPage 'bootstrap_4_layout.html.twig' %}
+
+
+{% if page.id == null %} {# Si création d'une page #}
+
+    {% if pageEleve %} {# Si création d'une page Eleve #}
+        {% set titre = 'Création page élève' %}
+        {% set titreBody = 'Création d\'un post élève' %}
+    {% else %} {# Si création d'une page Nathalie #}
+        {% set titre = 'Création d\'une page' %}
+        {% set titreBody = 'Création d\'un post pour une des mes pages' %}
+    {% endif %}
+
+{% else %} {# Si modification d'une page #}
+
+    {% if pageEleve %} {# Si création d'une page Eleve #}
+        {% set titre = 'Modif page élève' %}
+        {% set titreBody = 'Modification d\'une page élève' %}
+    {% else %}  {# Si création d'une page Nathalie #}
+        {% set titre = 'Modif d\'une page' %}
+        {% set titreBody = 'Modification d\'une de mes pages' %}
+    {% endif %}
+
+{% endif %}
+
+
+
+{% block title %}{{titre}}{% endblock %}  {# Titre de la page (en haut) #}
+
+{% block body %}
+<div class="container">
+    
+    <h1>{{titreBody}}</h1> {# Titre de la page sur la page #}
+   
+    {% if pageEleve and page.id != null %} 
+    
+        <form method="post" action="{{ path('page_delete_eleve', {id : page.id}) }}" onsubmit="var aze=confirm('Êtes-vous sûr de vouloir supprimer cette page ?');return aze;" >
+            <input type="hidden" name="_method" value="DELETE">
+            <input type="hidden" name="_token" value="{{ csrf_token('deleteEleve' ~ page.id ) }}">
+            <button class="btn btn-danger bouton-admin">Supprimer la page</button>
+        </form>
+
+    {% endif %}
+
+    <br />
+
+    {{ form_start(formPage) }}
+        {{ form_errors(formPage) }}
+        <div class="row">
+            <div class="col-md-8">
+                {{ form_row(formPage.title, {'label': 'Titre de la page', 'attr':{'placeholder': 'C\'est ici qu\'on met le titre '}})}}
+            </div>
+            <div class="col-md-4">
+                {{ form_row(formPage.imageFile, {'label': 'Importer l\'image', 'attr':{'placeholder': 'Image carrée, taille mini : 500/500px'}})}}
+            </div>
+            
+        </div>
+
+        {% if pageEleve == false %}
+            {{ form_row(formPage.description, {'label': 'Description de la page', 'attr':{'placeholder': 'Coucou moi c\'est la page et je suis trop belle!'}})}}
+
+            <div class="row">
+                <div class="col-md-6">
+                    {{ form_row(formPage.lienAzza, {'label': 'Lien Azza', 'attr':{'placeholder': 'Je n\'ai pas besoin d\'exister mais je peux te faire gagner plein de thune :)'}})}}
+                </div>
+            </div>
+        
+          
+        {% endif %}
+
+        {% if pageEleve %}
+            <button type="submit" class="btn btn-success">Envoyer la demande</button>
+        {% else %}
+            <button type="submit" class="btn btn-success">Enregistrer</button>
+        {% endif %}
+
+
+    {{ form_end(formPage) }}
+
+</div>
+{% endblock %}

@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes pages{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="marge-bas d-flex flex-row bd-highlight mb-3">
+        <div class="p-2 bd-highlight">
+            <p class="titre">Mes pages Azza</p>
+        </div>
+        
+        {% if is_granted('ROLE_ADMIN') %}
+            <div class="p-2 bd-highlight">
+                <button type="button" class="btn btn-warning bouton-admin" onclick="location.href='{{ path('page_create') }}'">Créer une page</button>
+            </div>
+            
+        {% endif %}
+        
+    </div>
+    
+    <section class="pages row">
+      
+        {% for page in pages %}
+           
+            <article class="col">
+                <div class="card slide-top">
+                    <div class="car-body">
+                      
+                        
+                        <div class="card-img">
+                            <a href="{{path('show_page', {'id': page.id} )}}" >
+                                <img src="{{vich_uploader_asset(page, 'imageFile')  }}"  alt"card-img-top" class="img-pages">
+                            </a>
+                        </div>
+
+                       
+                            <h3 >
+                                <a href="{{path('show_page', {'id': page.id} )}}" class="card-title" >
+                                    {{ page.title }}
+                                </a>
+                            </h3>
+                        
+                        <div class="card-subtitle">
+                          Posté le {{ page.createdAt | date('d/m/y') }} à {{ page.createdAt | date('H:i') }}
+                        </div>
+
+                    </div>
+                
+                </div>
+                
+            </article>
+            
+        {% endfor %}
+
+    </section>
+</div>
+{% endblock %}

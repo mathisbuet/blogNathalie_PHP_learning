@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+{% form_theme formPage 'bootstrap_4_layout.html.twig' %}
+
+
+
+{% block title %}Validation page{% endblock %}  {# Titre de la page (en haut) #}
+
+{% block body %}
+<div class="container">
+    
+    <p class="titre marge-bas">Validation de la page</p> {# Titre de la page sur la page #}
+   
+    <div class="row">
+        <div class="col">
+            <img src="{{vich_uploader_asset(page, 'imageFile')  }}"  alt"card-img-top" class="img-page">
+        </div>
+        
+        <div class="col">
+            <form method="post" action="{{ path('page_delete_eleve', {id : page.id}) }}" onsubmit="var aze=confirm('Êtes-vous sûr de vouloir supprimer cette page ?');return aze;" >
+            <input type="hidden" name="_method" value="DELETE">
+            <input type="hidden" name="_token" value="{{ csrf_token('deleteEleve' ~ page.id ) }}">
+            <button class="btn btn-danger bouton-admin" style="margin:20px;">Supprimer la page</button>
+            </form>
+        
+            <div style="margin:20px;">
+                <h4><strong>Auteur</strong> : {{page.userEleve.user.username}}</h4>
+                <h4><strong>Titre</strong> : {{page.title}}</h4>
+            </div>
+
+            <div class="card" style="height:120px; width:200px; margin:20px;">
+                {{ form_start(formPage) }}
+                {{ form_row(formPage.valide, {'label': 'Page élève valide?'})}}
+                <button type="submit" class="btn btn-success">Enregistrer</button>
+                {{ form_end(formPage) }}
+            </div>
+
+        </div>
+    
+    </div>
+    
+    
+
+</div>
+{% endblock %}

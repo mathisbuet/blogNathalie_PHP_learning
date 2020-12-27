@@ -1,0 +1,98 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Pannel élève{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="marge-bas d-flex flex-row bd-highlight mb-3">
+        <div class="p-2 bd-highlight">
+            <p class="titre" >Pannel des élèves</p>
+        </div>
+        
+        {% if is_granted('ROLE_ELEVE') %}
+            <div class="p-2 bd-highlight">
+                <button type="button" class="btn btn-warning bouton-admin" onclick="location.href='{{ path('page_create_eleve') }}'">Créer une page</button>
+            </div>
+            
+        {% endif %}
+
+        
+    </div>
+
+    <section class="pages row">
+
+        <div class="col border border-dark">
+            <h2 class="border-bottom border-dark">Valide</h2>
+
+            {% for page in pagesValide %}
+                <article>
+                        <div class="card bg-success text-white">
+                            <div class="car-body">
+                                <div class="card-img zoom">
+                                        <img src="{{vich_uploader_asset(page, 'imageFile')  }}"  alt"card-img-top" class="img-pannel">
+                                </div>
+                                <h3 >{{ page.title }}</h3>
+
+                                <div class="card-subtitle">
+                                    Posté le {{ page.createdAt | date('d/m/y') }} à {{ page.createdAt | date('H:i') }}
+                                </div>
+                                <button type="button" class="btn btn-warning bouton-admin" onclick="location.href='{{ path('page_edit_eleve', {'id': page.id}) }}'">Modifier</button>
+
+                            </div>
+                        </div>   
+                </article>
+            {% endfor %}
+
+        </div>
+
+        <div class="col border border-dark">
+            <h2 class="border-bottom border-dark">En attente</h2>
+            {% for page in pagesEnAttente %}
+                <article>
+                        <div class="card bg-info text-white">
+                            <div class="car-body">
+                                <div class="card-img zoom">
+                                        <img src="{{vich_uploader_asset(page, 'imageFile')  }}"  alt"card-img-top" class="img-pannel">
+                                </div>
+                                <h3 >{{ page.title }}</h3>
+
+                                <div class="card-subtitle">
+                                Posté le {{ page.createdAt | date('d/m/y') }} à {{ page.createdAt | date('H:i') }}</div>
+
+                                <button type="button" class="btn btn-warning bouton-admin" onclick="location.href='{{ path('page_edit_eleve', {'id': page.id}) }}'">Modifier</button>
+                            </div>
+                        </div>   
+                </article>
+            {% endfor %}
+
+        </div>
+
+        <div class="col border border-dark">
+            <h2 class="border-bottom border-dark">Refusé</h2>
+            {% for page in pagesNonValide %}
+                <article>
+                        <div class="card bg-danger text-white">
+                            <div class="car-body">
+                                <div class="card-img zoom">
+                                        <img src="{{vich_uploader_asset(page, 'imageFile')  }}"  alt"card-img-top" class="img-pannel">
+                                </div>
+                                <h3 >{{ page.title }}</h3>
+                                <div class="card-subtitle">
+                                Posté le {{ page.createdAt | date('d/m/y') }} à {{ page.createdAt | date('H:i') }}</div>
+                                <button type="button" class="btn btn-warning bouton-admin" onclick="location.href='{{ path('page_edit_eleve', {'id': page.id}) }}'">Modifier</button>
+                                
+                            </div>
+                        </div>   
+                </article>
+            {% endfor %}
+
+        </div>
+
+    </section>
+    
+    
+    
+    
+    
+</div>
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Validation eleve{% endblock %}
+
+{% block body %}
+{% if is_granted('ROLE_ADMIN') %}
+<div class="container">
+    
+     <p class="titre marge-bas" >Les pages élèves à valider</p>
+    
+    <section class="pages row">
+      
+        {% for page in pages %}
+
+                <article class="col">
+
+                        <a href="{{ path('page_eleve_validation', {'id': page.id}) }}">
+                    
+                            <div class="card">
+                                <div class="car-body">
+                                
+                                    <div class="card-img">
+                                            <img src="{{vich_uploader_asset(page, 'imageFile')  }}"  alt"card-img-top" class="img-pages">
+                                    </div>
+
+                                        <h3 >
+                                            {{ page.title }}
+                                        </h3>
+                                    
+                                    <div class="card-subtitle">
+                                    Posté le {{ page.createdAt | date('d/m/y') }} à {{ page.createdAt | date('H:i') }} par {{page.userEleve.user.username}}
+                                    </div>
+
+                                </div>
+                            
+                            </div>
+                        </a>
+                </article>
+            
+        {% endfor %}
+
+    </section>
+</div>
+ {% endif %}
+{% endblock %}

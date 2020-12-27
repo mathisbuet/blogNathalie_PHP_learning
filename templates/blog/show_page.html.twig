@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {{page.title}} {% endblock %}
+{% block body %}
+<div class="bloc_page">
+    <div class="marge-bas marge-bas d-flex flex-row bd-highlight mb-3">
+        
+            <div class="p-2 bd-highlight">
+                <p class="titre">{{ page.title }}</p>
+                <p class="sous-titre">
+                    Posté le {{ page.createdAt | date('d/m/y') }} à {{ page.createdAt | date('H:i') }}
+                </p>
+                
+            </div>
+            
+            
+            {% if is_granted('ROLE_ADMIN') %}
+                <div class="p-2 bd-highlight">
+                    <button type="button" class="btn btn-warning bouton-admin" onclick="location.href='{{ path('page_edit', {'id': page.id}) }}'">Modifier</button>
+
+
+                </div>
+
+                <div class="p-2 bd-highlight">
+
+ 
+                    <form method="post" action="{{ path('page_delete', {id : page.id}) }}" onsubmit="var aze=confirm('Êtes-vous sûr de vouloir supprimer cette page ?');return aze;" >
+                        <input type="hidden" name="_method" value="DELETE">
+                        <input type="hidden" name="_token" value="{{ csrf_token('deleteNathalie' ~ page.id ) }}">
+                        <button class="btn btn-danger bouton-admin">Supprimer</button>
+                    </form>
+                
+                </div> 
+            {% endif %}
+            
+                
+    </div>
+        
+    
+        <section>
+            <ps><img src="{{vich_uploader_asset(page, 'imageFile')  }}"  alt"image de la page" class="img-page"></p>                  
+        
+            <p class="texte-page">{{page.description}}</p>
+        
+        
+        </section>
+
+        {% if page.lienAzza != NULL %}
+            <div class="dessous">
+                <a href="{{page.lienAzza}}" name="Lien produit" >Lien vers le produit</a> 
+            </div>
+        {% endif %}
+        
+            
+                
+    </div>
+</div>
+{% endblock %}

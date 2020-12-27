@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Pages d'élèves{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="marge-bas d-flex flex-row bd-highlight mb-3">
+        <div class="p-2 bd-highlight">
+            <p class="titre" >Les pages des mes élèves</p>
+        </div>
+        
+        {% if is_granted('ROLE_ELEVE') %}
+            <div class="p-2 bd-highlight">
+                <button type="button" class="btn btn-warning bouton-admin" onclick="location.href='{{ path('pannel_eleve') }}'">Pannel élève</button>
+            </div>
+            
+        {% endif %}
+
+        {% if is_granted('ROLE_ADMIN') %}
+            {% if nbPagesNonValide > 0 %}
+                {% set boutonClasse = "btn-danger" %}
+            {% else %}
+                {% set boutonClasse = "btn-warning" %}
+            {% endif %}
+            <div class="p-2 bd-highlight">
+                <button type="button" class="btn {{boutonClasse}} bouton-admin" onclick="location.href='{{ path('show_pages_eleves_attente') }}'">{{nbPagesNonValide}} page(s) à valider</button>
+            </div>
+            
+        {% endif %}
+        
+    </div>
+    
+    <section class="pages row">
+      
+        {% for page in pages %}
+
+           
+
+            <article class="col">
+
+                {% if is_granted('ROLE_ADMIN') %}
+                    <a href="{{ path('page_edit_eleve', {'id': page.id}) }}">
+                {% endif %}
+                    <div class="card">
+
+                        <div class="car-body">
+                        
+                            <div class="card-img">
+                                    <img src="{{vich_uploader_asset(page, 'imageFile')  }}"  alt"card-img-top" class="img-pages">
+                            </div>
+
+                                <h3 >
+                                    {{ page.title }}
+                                </h3>
+                            
+                            <div class="card-subtitle">
+                            Posté le {{ page.createdAt | date('d/m/y') }} à {{ page.createdAt | date('H:i') }} par {{page.userEleve.user.username}}</div>
+
+                        </div>
+                    
+                    </div>
+                {% if is_granted('ROLE_ADMIN') %}
+                    </a>
+                {% endif %}
+                
+            </article>
+            
+        {% endfor %}
+
+    </section>
+</div>
+{% endblock %}

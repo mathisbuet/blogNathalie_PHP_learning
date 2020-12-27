@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Blog de Nathalie!{% endblock %}
+
+{% block body %}
+{% if is_granted('ROLE_ADMIN') %}
+    <div class="bloc_page">
+         <p class="titre marge-bas">Pannel admin</p>
+
+        {% if nbPagesEleveNonValide > 0 %}
+                {% set boutonClasse = "btn-danger" %}
+            {% else %}
+                {% set boutonClasse = "btn-warning" %}
+            {% endif %}
+            <div class="p-2 bdighlight">
+                <button type="button" class="btn {{boutonClasse}} bouton-admin" onclick="location.href='{{ path('show_pages_eleves_attente') }}'">{{nbPagesEleveNonValide}} page(s) élève à valider</button>
+            </div>
+
+        
+
+    </div>
+{% endif %}
+{% endblock %}
